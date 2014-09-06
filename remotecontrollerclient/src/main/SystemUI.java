@@ -21,6 +21,7 @@ import util.ClientConstants;
  */
 public class SystemUI extends JFrame {
 	private static final long serialVersionUID = -3717968933948826246L;
+
 	private Container panel;
 	private JTextArea jTextArea;
 	private JTable jTable;
@@ -36,7 +37,8 @@ public class SystemUI extends JFrame {
 		// --------------------主界面上方菜单显示区域--------------------------------------------------
 
 		// --------------------主界面中间列表显示区域--------------------------------------------------
-		tableModer_center.setDataVector(ClientConstants.servers, ClientConstants.MAIN_TABLE_HEAD);
+		tableModer_center.setDataVector(ClientConstants.servers,
+				ClientConstants.MAIN_TABLE_HEAD);
 		jTable = new JTable(tableModer_center);
 		jTable.setAutoscrolls(true);
 		jTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
