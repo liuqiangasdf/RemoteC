@@ -15,7 +15,7 @@ public class Server extends ServerBase {
 	/**
 	 * 端口号(默认5888)
 	 */
-	private String port = "5888";
+	private int port = 5888;
 	/**
 	 * 添加时间
 	 */
@@ -29,11 +29,11 @@ public class Server extends ServerBase {
 		this.password = password;
 	}
 
-	public String getPort() {
+	public int getPort() {
 		return port;
 	}
 
-	public void setPort(String port) {
+	public void setPort(int port) {
 		this.port = port;
 	}
 
@@ -44,7 +44,27 @@ public class Server extends ServerBase {
 	public void setDateOfCreate(Date dateOfCreate) {
 		this.dateOfCreate = dateOfCreate;
 	}
-	
-	
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateOfCreate == null) ? 0 : dateOfCreate.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		Server server = (Server) obj;
+		if (server.getIpAddrOut().equals(this.getIpAddrOut()) && server.getIpAddrIn().equals(this.getIpAddrIn())
+				&& server.getMac().equals(this.getMac())) {
+			return true;
+		}
+		return false;
+	}
 }

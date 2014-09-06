@@ -14,17 +14,16 @@ import java.net.UnknownHostException;
  */
 public class ConnectionUtil {
 	/**
-	 * 与被控端建立连接
+	 * 与被控端建立连接(本地随机端口)
 	 * 
 	 * @param addr远程地址
 	 * @param rPort远程端口
-	 * @param lPort本地端口
 	 * @return UDP Socket连接
 	 */
-	public static DatagramSocket connByUDP(byte[] addr, int rPort, int lPort) {
+	public static DatagramSocket connByUDP(byte[] addr, int rPort) {
 		DatagramSocket socket = null;
 		try {
-			socket = new DatagramSocket(lPort);
+			socket = new DatagramSocket();
 			socket.connect(InetAddress.getByAddress(addr), rPort);
 			LogUtil.infoWrite("连接'" + InetAddress.getByAddress(addr) + "'成功", ClientConstants.LOG_PATH);
 		} catch (SocketException e) {
@@ -35,6 +34,21 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 		return socket;
+	}
+
+	/**
+	 * 关闭与客户端的连接
+	 * 
+	 * @param socket
+	 */
+	public static void closeByUDP(DatagramSocket socket) {
+		try {
+			socket.disconnect();
+			socket.close();
+		} catch (Exception e) {
+			LogUtil.errorWrite(e.getMessage(), ClientConstants.LOG_PATH);
+			e.printStackTrace();
+		}
 	}
 
 	/**
