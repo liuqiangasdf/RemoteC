@@ -5,7 +5,6 @@ import java.awt.Container;
 import java.util.Vector;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
