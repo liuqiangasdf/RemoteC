@@ -28,10 +28,10 @@ public class MenuBarX extends JMenuBar {
 		JMenu otherMenu = new JMenu("Other");
 		JMenu subMenu = new JMenu("SubMenu");
 		JMenu subMenu2 = new JMenu("SubMenu2");
-		// Assemble the File menus with mnemonics.
 		ActionListener printListener = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Menu item [" + event.getActionCommand() + "] was pressed.");
+				System.out.println("Menu item [" + event.getActionCommand()
+						+ "] was pressed.");
 			}
 		};
 		for (int i = 0; i < fileItems.length; i++) {
@@ -42,8 +42,9 @@ public class MenuBarX extends JMenuBar {
 		// Assemble the File menus with keyboard accelerators.
 		for (int i = 0; i < editItems.length; i++) {
 			JMenuItem item = new JMenuItem(editItems[i]);
-			item.setAccelerator(KeyStroke.getKeyStroke(editShortcuts[i], Toolkit.getDefaultToolkit()
-					.getMenuShortcutKeyMask(), false));
+			item.setAccelerator(KeyStroke
+					.getKeyStroke(editShortcuts[i], Toolkit.getDefaultToolkit()
+							.getMenuShortcutKeyMask(), false));
 			item.addActionListener(printListener);
 			editMenu.add(item);
 		}
@@ -69,7 +70,8 @@ public class MenuBarX extends JMenuBar {
 		item.addActionListener(printListener);
 		buttonGroup.add(item);
 		otherMenu.addSeparator();
-		otherMenu.add(item = new JMenuItem("Potted Plant", new ImageIcon("image.gif")));
+		otherMenu.add(item = new JMenuItem("Potted Plant", new ImageIcon(
+				"image.gif")));
 		item.addActionListener(printListener);
 		// Finally, add all the menus to the menu bar.
 		add(fileMenu);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Vector;
 
 import main.SystemUI;
 
@@ -16,6 +17,7 @@ import entity.Server;
  */
 public class UDPListener implements Runnable {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		DatagramSocket client = null;
@@ -32,20 +34,32 @@ public class UDPListener implements Runnable {
 				String ip = data.getAddress().getHostAddress();
 				int port = data.getPort();
 				String name = data.getAddress().getHostName();
-				LogUtil.infoWrite(data.getAddress().getHostAddress() + " : " + str, ClientConstants.LOG_PATH);
-				// TODO 收到被控端上线消息，更新控制端列表
+				LogUtil.infoWrite(data.getAddress().getHostAddress() + " : "
+						+ str, ClientConstants.LOG_PATH);
+				// 收到被控端上线消息，更新控制端列表
 				Server server = new Server();
 				server.setPort(port);
 				server.setIpAddrOut(ip);
 				server.setName(name);
 				server.setStatus(0);
-				if (!ClientConstants.servers.contains(server)) {
-					ClientConstants.servers.add(server);
-					SystemUI.tableModer_center.addRow(ClientConstants.servers);
-				} else {
-					ClientConstants.servers.get(ClientConstants.servers.indexOf(server)).setStatus(0);
-					SystemUI.tableModer_center.fireTableDataChanged();
+				Vector<String> serverVector = new Vector<String>();
+				serverVector.add(ClientConstants.servers.size() + "");
+				serverVector.add(server.getName());
+				serverVector.add(server.getIpAddrOut());
+				serverVector.add("win7");
+				serverVector.add("在线");
+				serverVector.add("测试");
+				Vector<String> temp = null;
+				for (int i = 0; i < ClientConstants.servers.size(); i++) {
+					temp = (Vector<String>) ClientConstants.servers.get(i);
+					if (temp.get(3).equals(ip)) {
+						temp.set(5, "在线");
+						ClientConstants.servers.set(i, temp);
+					} else {
+						ClientConstants.servers.add(serverVector);
+					}
 				}
+				SystemUI.tableModer_center.fireTableDataChanged();
 			}
 		} catch (SocketException e) {
 			e.printStackTrace();
