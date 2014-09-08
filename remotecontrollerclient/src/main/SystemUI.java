@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -13,13 +15,15 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
-
-import entity.Server;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import ui.MenuBarX;
+import ui.PopMenuTable;
 import ui.TableModer;
 import util.ClientConstants;
 import util.LogUtil;
+import entity.Server;
 
 /**
  * 控制端主界面UI
@@ -30,13 +34,14 @@ public class SystemUI extends JFrame {
 	private static final long serialVersionUID = -3717968933948826246L;
 
 	private Container panel;
-	private JTextArea jTextArea;
+	public static JTextArea jTextArea;
 	private JTable jTable;
 	private JScrollPane jScrollPane_botton;
 	private JScrollPane jScrollPane_center;
 	private JScrollPane jScrollPane_left;
 	private JTabbedPane jTabbedPane_center;
 	private JTree jTree_left;
+	private PopMenuTable popMenuTable = new PopMenuTable();
 	public static TableModer tableModer_center = new TableModer();
 
 	public SystemUI() {
@@ -45,6 +50,8 @@ public class SystemUI extends JFrame {
 		panel.setLayout(new BorderLayout(2, 2));
 
 		// --------------------主界面上方菜单显示区域--------------------------------------------------
+
+		// --------------------主界面右边待定显示区域--------------------------------------------------
 
 		// --------------------主界面左面列表显示区域--------------------------------------------------
 		jTree_left = new JTree();
@@ -58,6 +65,33 @@ public class SystemUI extends JFrame {
 		jTable.setAutoscrolls(true);
 		jTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jTable.setDoubleBuffered(true);
+		jTable.setRowHeight(23);
+		jTable.setRowMargin(2);
+		DefaultTableCellRenderer dtr = new DefaultTableCellRenderer();
+		dtr.setHorizontalAlignment(SwingConstants.CENTER);
+		jTable.setDefaultRenderer(Object.class, dtr);
+		jTable.add(popMenuTable);
+
+		// 主界面表格鼠标动作监听事件
+		jTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					if (e.isPopupTrigger()) {
+						// 取得右键点击所在行
+						int row = e.getY() / jTable.getRowHeight();
+						jTable.getSelectionModel().setLeadSelectionIndex(row);
+						// JOptionPane.showMessageDialog(rootPane, row);
+						// 弹出菜单
+						if (row < jTable.getRowCount()) {
+							popMenuTable.show(e.getComponent(), e.getX(),
+									e.getY());
+						}
+					}
+				}
+			}
+		});
 		jTable.setFillsViewportHeight(true);
 		jScrollPane_center = new JScrollPane();
 		jTabbedPane_center = new JTabbedPane(JTabbedPane.TOP);
@@ -106,6 +140,8 @@ public class SystemUI extends JFrame {
 		serverVector.add("在线");
 		serverVector.add("测试");
 
+		ClientConstants.servers.add(serverVector);
+		ClientConstants.servers.add(serverVector);
 		ClientConstants.servers.add(serverVector);
 		SystemUI ui = new SystemUI();
 		ui.setVisible(true);
